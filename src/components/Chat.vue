@@ -1,8 +1,8 @@
 <template>
   <div class="chat">
     <ChatTitle v-bind:fio="'Boris Pavlov'" :post="'Full stack developer'"/>
-    <MessagesList :messages="messages"/>
-    <MessageBox @sendMessage="addMessage"/>
+    <MessagesList/>
+    <MessageBox/>
   </div>
 </template>
 
@@ -14,17 +14,6 @@ import MessageBox from './chat/MessageBox.vue';
 export default {
   name: 'Chat',
   components: { MessageBox, MessagesList, ChatTitle },
-  data() {
-    return {
-      messages: [
-      ],
-    };
-  },
-  methods: {
-    addMessage(message) {
-      this.messages.push(message);
-    },
-  },
 };
 </script>
 

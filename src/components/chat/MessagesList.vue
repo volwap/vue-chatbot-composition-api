@@ -10,19 +10,22 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import PersonMessage from './messages/PersonMessage.vue';
 import ChatbotMessage from './messages/ChatbotMessage.vue';
 
 export default {
   name: 'MessagesList',
   components: { ChatbotMessage, PersonMessage },
-  props: {
-    messages: Array,
-  },
   watch: {
     messages() {
       this.$nextTick(this.scrollToBottom);
     },
+  },
+  computed: {
+    ...mapState([
+      'messages',
+    ]),
   },
   methods: {
     scrollToBottom() {

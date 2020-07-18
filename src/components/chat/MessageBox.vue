@@ -16,33 +16,22 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
   name: 'MessageBox',
   data() {
     return {
       comment: '',
-      chatbotMessages: [
-        'Привет! Меня зовут Борис, а вас?',
-        'Приятно с вами познакомиться!',
-        'Как ваши дела?',
-        'Не так уж и плохо, спасибо)',
-        'Чем вы занимаетесь?',
-        'Это потрясающе!',
-        'Чат - хорошее место для общения',
-        'Я думаю, что вы - хороший человек',
-        'Почему вы так думаете?',
-        'Можете объяснить?',
-        'В любом случае я должен идти',
-        'Было приятно поболтать с вами',
-        'Пришло время написать больше кода',
-        'Счастливо оставаться!',
-        ':)',
-      ],
-      chatbotIndex: 0,
     };
   },
   mounted() {
     this.sendChatbotMessage();
+  },
+  computed: {
+    ...mapGetters([
+      'nextChatbotMessage',
+    ]),
   },
   methods: {
     sendMessage() {
@@ -51,7 +40,7 @@ export default {
         id: Date.now(),
         text: this.comment,
       };
-      this.$emit('sendMessage', message);
+      this.$store.dispatch('sendMessage', message);
       this.comment = '';
       setTimeout(this.sendChatbotMessage, 1000 + (Math.random() * 20) * 100);
     },
@@ -59,18 +48,15 @@ export default {
       if (this.comment) return;
       const message = {
         id: Date.now(),
-        text: this.chatbotMessages[this.chatbotIndex],
+        text: this.nextChatbotMessage,
         date: new Date(),
         chatbot: true,
       };
-      this.$emit('sendMessage', message);
-      if (this.chatbotIndex < this.chatbotMessages.length) {
-        this.chatbotIndex += 1;
-      }
-      if (this.chatbotIndex === 4) {
-        setTimeout(this.sendChatbotMessage, 1000 + (Math.random() * 20) * 100);
-      }
+      this.saveMessage(message);
     },
+    ...mapActions({
+      saveMessage: 'sendMessage',
+    }),
   },
 };
 </script>
