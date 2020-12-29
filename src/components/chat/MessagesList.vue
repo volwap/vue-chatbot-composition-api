@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { ref, nextTick, onUpdated } from 'vue';
 import { mapState } from 'vuex';
 import PersonMessage from './messages/PersonMessage.vue';
 import ChatbotMessage from './messages/ChatbotMessage.vue';
@@ -17,20 +18,25 @@ import ChatbotMessage from './messages/ChatbotMessage.vue';
 export default {
   name: 'MessagesList',
   components: { ChatbotMessage, PersonMessage },
-  watch: {
-    messages() {
-      this.$nextTick(this.scrollToBottom);
-    },
-  },
   computed: {
     ...mapState([
       'messages',
     ]),
   },
-  methods: {
-    scrollToBottom() {
-      this.$refs.scrollbar.scrollTop = this.$refs.scrollbar.scrollHeight;
-    },
+  setup() {
+    const scrollbar = ref(null); // reactive({})
+
+    function scrollToBottom() {
+      scrollbar.value.scrollTop = scrollbar.value.scrollHeight;
+    }
+
+    onUpdated(() => {
+      nextTick(scrollToBottom);
+    });
+
+    return {
+      scrollbar,
+    };
   },
 };
 </script>

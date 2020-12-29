@@ -39,6 +39,7 @@ export default {
       const message = {
         id: Date.now(),
         text: this.comment,
+        date: new Date(),
       };
       this.$store.dispatch('sendMessage', message);
       this.comment = '';

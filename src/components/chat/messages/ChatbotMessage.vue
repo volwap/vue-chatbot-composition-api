@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import useDateTimeFormat from '../../../hooks/dateTimeFormat';
+
 export default {
   name: 'ChatbotMessage',
   props: {
@@ -25,13 +27,10 @@ export default {
       this.loading = false;
     }, 1000 + (Math.random() * 20) * 100);
   },
-  computed: {
-    dateTime() {
-      const { date } = this.message;
-      const hours = date.getHours().toString().padStart(2, '0');
-      const minutes = date.getMinutes().toString().padStart(2, '0');
-      return `${hours}:${minutes}`;
-    },
+  setup(props) {
+    return {
+      ...useDateTimeFormat(props.message.date),
+    };
   },
 };
 </script>
